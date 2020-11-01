@@ -6,25 +6,23 @@ class sidebar extends Component {
   // TODO: change initial state to be whatever is in the database
   state = {
     history: [],
-    count: 0,
+    currId: 0, // id of currently selected entry
   };
 
   // todo: how should key ordering work?? if an entry is deleted, would the next entry created have its same key,
   // or do we just disregard the # for the deleted key??
   handleCreate = () => {
     const history = [...this.state.history];
-    const count = this.state.count + 1;
 
     history.push(
       <EntryPrev title={"TESTING TITLE"} wordPrev={"TESTING WORDS"}></EntryPrev>
     );
-    this.setState({ count });
     this.setState({ history });
   };
 
   // notify entryPrev that entry has changed
-  handleTitleChange = (entryId) => {
-    console.log("TITLE CHANGE");
+  handleTitleChange = () => {
+    console.log("TITLE CHANGE CLICKED YEETT");
   };
 
   // notify entryPrev that text has changed

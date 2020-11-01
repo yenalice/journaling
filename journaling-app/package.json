@@ -11,6 +11,7 @@
     "react-dom": "^17.0.0",
     "react-scripts": "3.4.4"
   },
+  "homepage": "http://localhost/journaling",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
