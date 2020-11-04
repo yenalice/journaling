@@ -15,20 +15,15 @@ code {
     monospace;
 }
 
-#header {
-  background-color: lightblue;
-}
-
 #main-container {
-  background-color: pink;
   display: flex;
   height: 95vh;
+  background-color: #fcdcec;
 }
 
 #sidebar {
   border: solid black;
   width: 20%;
-  overflow-y: scroll;
 }
 
 #entry {
@@ -47,11 +42,14 @@ code {
 }
 
 .factor-box {
-  background-color: red;
   margin: 0.5em;
 }
 
 #text-area {
   height: 100%;
   width: 100%;
+}
+
+#user-link {
+  margin: 0 2em;
 }

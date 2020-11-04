@@ -2,10 +2,23 @@ import React, { Component } from "react";
 
 const NavBar = () => {
   return (
-    <nav className="navbar navbar-light bg-light">
-      <a className="navbar-brand" href="#">
-        <span className="badge badge-pill badge-secondary">TESTING ?!!!</span>
-      </a>
+    <nav className="navbar navbar-light bg-light justify-content-between">
+      <a className="navbar-brand">Kibo</a> {/* TODO: Link to homepage */}
+      <form className="form-inline">
+        <input
+          className="form-control mr-sm-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        ></input>
+        <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
+          Search
+        </button>
+        <a className="navbar-link" id="user-link">
+          User
+        </a>
+        {/* TODO: Link to login/user page */}
+      </form>
     </nav>
   );
 };

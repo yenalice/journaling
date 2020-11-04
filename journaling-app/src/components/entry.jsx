@@ -1,23 +1,32 @@
 import React, { Component } from "react";
+import WeatherIcon from "../icons/weather.svg";
+import ExerciseIcon from "../icons/exercise.svg";
 
 class Entry extends Component {
   state = {};
 
   render() {
+    const { onTitleChange, onTextChange } = this.props;
+
     return (
       <React.Fragment>
         <div id="extras-box">
           <div>
             <input
+              id="title"
               type="text"
               placeholder="Entry Title"
-              //onChange={handleTitleChange}
+              onChange={onTitleChange}
             ></input>
             <div id="date-box">DATE BOX</div>
           </div>
           <div id="factors">
-            <div className="factor-box">WEATHER BOX</div>
-            <div className="factor-box">EXERCISE BOX</div>
+            <button className="factor-box">
+              <img src={WeatherIcon} />
+            </button>
+            <button className="factor-box">
+              <img src={ExerciseIcon} />
+            </button>
           </div>
           <div>FORMATTING STUFF</div>
         </div>
@@ -26,7 +35,7 @@ class Entry extends Component {
           id="text-area"
           type="text"
           placeholder="How was your day?"
-          //onChange={handleTextChange}
+          onChange={onTextChange}
         ></textarea>
       </React.Fragment>
     );
