@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import CreateButton from "./components/createButton";
 import Entry from "./components/entry";
 import EntryPrev from "./components/entryPrev";
 import NavBar from "./components/navBar";
@@ -59,13 +58,11 @@ class App extends Component {
             <NavBar></NavBar>
           </header>
           <div id="main-container">
-            <div id="sidebar" className="overflow-auto">
-              <CreateButton
-                onCreate={this.handleCreate}
-                entryId={this.state.currId}
-              ></CreateButton>
-              <Sidebar history={this.state.history}></Sidebar>
-            </div>
+            <Sidebar
+              history={this.state.history}
+              handleCreate={this.handleCreate}
+              entryId={this.state.currId}
+            ></Sidebar>
             <div id="entry">
               <Route path="/entry/:id" component={Entry}></Route>
               {/* <Entry
