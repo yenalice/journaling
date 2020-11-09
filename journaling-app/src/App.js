@@ -4,12 +4,14 @@ import Entry from "./components/entry";
 import EntryPrev from "./components/entryPrev";
 import NavBar from "./components/navBar";
 import Sidebar from "./components/sidebar";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class App extends Component {
   // TODO: change initial state to be whatever is in the database
   state = {
     history: [],
-    currID: 0, // current highest ID assigned
+    entries: [], // TODO: when database is set up, pull from there instead
+    currId: 0, // current highest ID assigned
     currTitle: "",
     currWords: "",
   };
@@ -19,17 +21,20 @@ class App extends Component {
   // creating new entry on push of create button
   handleCreate = () => {
     const history = [...this.state.history];
-    const currID = this.state.currID + 1;
+    const entries = [...this.state.entries];
+    const currId = this.state.currId + 1;
 
     history.push(
       <EntryPrev
-        id={this.state.currID} // id of each individual entry preview
+        id={this.state.currId} // id of each individual entry preview
         title={this.state.currTitle}
         wordPrev={this.state.currWords}
       ></EntryPrev>
     );
 
-    this.setState({ currID, history });
+    //entries.push(<Entry></Entry>);
+
+    this.setState({ currId, history, entries });
   };
 
   // TODO: handle new entry preview on typing
@@ -48,23 +53,29 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header id="header">
-          <NavBar></NavBar>
-        </header>
-        <div id="main-container">
-          <div id="sidebar" className="overflow-auto">
-            <CreateButton onCreate={this.handleCreate}></CreateButton>
-            <Sidebar history={this.state.history}></Sidebar>
-          </div>
-          <div id="entry">
-            <Entry
-              onTitleChange={this.handleTitleChange}
-              onTextChange={this.handleTextChange}
-            ></Entry>
+      <Router>
+        <div className="App">
+          <header id="header">
+            <NavBar></NavBar>
+          </header>
+          <div id="main-container">
+            <div id="sidebar" className="overflow-auto">
+              <CreateButton
+                onCreate={this.handleCreate}
+                entryId={this.state.currId}
+              ></CreateButton>
+              <Sidebar history={this.state.history}></Sidebar>
+            </div>
+            <div id="entry">
+              <Route path="/entry/:id" component={Entry}></Route>
+              {/* <Entry
+                onTitleChange={this.handleTitleChange}
+                onTextChange={this.handleTextChange}
+              ></Entry> */}
+            </div>
           </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }

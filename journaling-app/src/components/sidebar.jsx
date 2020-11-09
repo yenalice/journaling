@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class SideBar extends Component {
   state = { selectedIdx: 0 };
@@ -13,20 +14,21 @@ class SideBar extends Component {
     const revList = [...this.props.history];
     revList.reverse();
 
-    // TODO: change href
     return revList.length == 0 ? null : (
       <div className="list-group">
-        {revList.map((entry, i) => (
-          <a
-            href="#"
+        {revList.map((prev) => (
+          <Link
+            to={`/entry/${prev.props.id}`}
             className={
-              i == this.state.selectedIdx ? styleStr + " active" : styleStr
+              prev.props.id == this.state.selectedIdx
+                ? styleStr + " active"
+                : styleStr
             }
-            onClick={() => this.handleClick(i)}
-            key={i}
+            onClick={() => this.handleClick(prev.props.id)}
+            key={prev.props.id}
           >
-            {entry}
-          </a>
+            {prev}
+          </Link>
         ))}
       </div>
     );
