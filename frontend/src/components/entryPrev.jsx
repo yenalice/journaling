@@ -10,9 +10,9 @@ class EntryPrev extends Component {
       <React.Fragment>
         <div className="d-flex w-100 justify-content-between">
           <h5 className="mb-1">{this.props.title}</h5>
-          <small>3 days ago</small>
+          <small>{this.props.createTime}</small>
         </div>
-        <p className="mb-1">{this.props.wordPrev}</p>
+        <p className="mb-1">{this.props.text}</p>
       </React.Fragment>
     );
   }

@@ -11,7 +11,7 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// cors middleware, allow us to parse json
+// cors middleware for parsing json
 app.use(cors());
 app.use(express.json());
 
@@ -25,8 +25,10 @@ connection.once("open", () => {
 });
 
 // require & use router files
+const loginRouter = require("./routes/loginRoute");
 const entryRouter = require("./routes/entryRoute");
 const userRouter = require("./routes/userRoute");
+app.use("/", loginRouter);
 app.use("/entry", entryRouter);
 app.use("/user", userRouter);
 

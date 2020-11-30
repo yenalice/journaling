@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App.js";
 import Home from "./components/home";
+import UserDetail from "./components/userDetail";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter as Router, Route } from "react-router-dom"; // dynamic rendering
@@ -10,8 +11,10 @@ import { BrowserRouter as Router, Route } from "react-router-dom"; // dynamic re
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <Route exact path="/" component={Home} />
-      <Route path="/user=:user" component={App} />
+      <Route exact path={["/", "/login", "/signup"]} component={Home} />
+      <Route path="/entry" component={App} />
+      <Route path="/user/:username" component={UserDetail} />
+      {/* TODO: make user component */}
     </Router>
   </React.StrictMode>,
   document.getElementById("root")

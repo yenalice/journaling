@@ -34,10 +34,14 @@ class SignUp extends Component {
     // TODO: handle validation?? if validated, then reate new user & redirect to user entries
 
     axios
-      .post("http://localhost:5000/user/", newUser)
+      .post(`http://localhost:5000/user/${this.state.username}/`, newUser)
       .then((res) => console.log(res.data));
 
-    window.location = `/user=${this.state.username}`;
+    // append query string user = {username}
+
+    // TODO: start session
+
+    window.location = `entry?user=${this.state.username}`;
   };
 
   render() {
@@ -94,7 +98,7 @@ class SignUp extends Component {
         <input
           type="submit"
           value="Create Account"
-          className="btn btn-primary input"
+          className="btn btn-lg btn-primary input"
         ></input>
       </form>
     );

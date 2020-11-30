@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Login from "./login";
 import SignUp from "./signup";
 
@@ -14,17 +15,17 @@ class Home extends Component {
       <div className="container-style">
         <h1 id="home-style">HOME</h1>
         <p className="login-style">
-          <a href="#" onClick={() => this.handleAuth("login")}>
+          <Link to="/login" onClick={() => this.handleAuth("login")}>
             Login
-          </a>
+          </Link>
           {" or "}
-          <a href="#" onClick={() => this.handleAuth("signup")}>
+          <Link to="/signup" onClick={() => this.handleAuth("signup")}>
             Sign Up
-          </a>
+          </Link>
           {" to Write!"}
         </p>
 
-        {this.state.status == "login" ? <Login /> : <SignUp />}
+        {this.state.status === "login" ? <Login /> : <SignUp />}
       </div>
     );
   }

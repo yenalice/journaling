@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const CreateButton = ({ onCreate, entryId }) => {
+const CreateButton = ({ onCreate }) => {
   return (
     <Link to={`/entry/new`}>
       <button
