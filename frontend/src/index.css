@@ -17,24 +17,41 @@ code {
 
 #main-container {
   display: flex;
-  height: 95vh;
+  height: 91.5vh;
   background-color: #fcb9b9;
 }
 
+.navbar {
+  min-height: 50px;
+}
+
 #sidebar {
-  border: solid black;
   width: 20%;
 }
 
+#sidebar-header {
+  height: 10%;
+}
+
+#preview-container {
+  height: 90%;
+}
+
+/* TODO: fix list item height so that it DOESN'T keep expanding as textarea input does!!!! */
+.list-group-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 #entry {
-  border: solid black;
   width: 80%;
   display: flex;
   flex-direction: column;
+  margin: 2%;
 }
 
-.extras-box {
-  border: solid black;
+.text-group {
+  height: 100%;
 }
 
 #factors {
@@ -46,8 +63,12 @@ code {
 }
 
 #text-area {
-  height: 100%;
-  width: 100%;
+  height: 95%;
+}
+
+#save-btn {
+  margin: 1em 0;
+  float: right;
 }
 
 #user-link {

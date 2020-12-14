@@ -1,21 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 
-class EntryPrev extends Component {
-  state = {};
-
-  render() {
-    // TODO: create a delete button
-
-    return (
-      <React.Fragment>
-        <div className="d-flex w-100 justify-content-between">
-          <h5 className="mb-1">{this.props.title}</h5>
-          <small>{this.props.createTime}</small>
-        </div>
-        <p className="mb-1">{this.props.text}</p>
-      </React.Fragment>
-    );
-  }
-}
+const EntryPrev = (props) => {
+  return (
+    <React.Fragment>
+      <div className="d-flex w-100 justify-content-between">
+        <h5 className="mb-1">{props.title}</h5>
+        <small>{props.createTime}</small>
+      </div>
+      <p className="mb-1">{props.text}</p>
+    </React.Fragment>
+  );
+};
 
 export default EntryPrev;

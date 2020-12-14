@@ -1,128 +1,93 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
 import Entry from "./components/entry";
-import EntryPrev from "./components/entryPrev";
 import NavBar from "./components/navBar";
 import Sidebar from "./components/sidebar";
-import axios from "axios";
+import * as entryActions from "./actions/entryActions";
+/*
+import {
+  HtmlEditor,
+  Image,
+  Inject,
+  Link,
+  QuickToolbar,
+  RichTextEditorComponent,
+  Toolbar,
+} from "@syncfusion/ej2-react-richtexteditor";
+*/
 
 class App extends Component {
   state = {
-    entryHistory: [],
-    currTitle: "",
-    currText: "",
+    title: "",
+    text: "",
   };
 
-  constructor(props) {
-    super(props);
-    this.entryElement = React.createRef();
-  }
-
-  /* Format date in form mm/dd/year */
-  formatDate = (t) => {
-    return (
-      (t.getMonth() + 1).toString() +
-      "/" +
-      t.getDate().toString() +
-      "/" +
-      t.getFullYear().toString().substring(0, 2)
-    );
-  };
-
-  /* Format hours in format hour: minute */
-  formatHour = (t) => {
-    const mins = t.getMinutes();
-    const minutes = mins >= 10 ? mins.toString() : "0" + mins.toString();
-    return t.getHours().toString() + ":" + minutes;
-  };
-
-  /* if 1 day or greater, display # days, else display # hours */
-  getTime = (t) => {
-    const timestamp = t.toString().substring(0, 8);
-    const date = new Date(parseInt(timestamp, 16) * 1000);
-    const difference = Date.now() - date;
-    return difference < 86400000
-      ? this.formatHour(date)
-      : this.formatDate(date);
-  };
-
-  /* Initially load entry previews on sidebar with database entries */
+  /* load sidebar of entry previews and the entry display */
   // TODO: change hardcoded "yenalice" to match session/current user
-  componentDidMount = () => {
-    axios
-      .get(`http://localhost:5000/entry?user=yenalice`)
-      .then((res) => {
-        this.setState({
-          entryHistory: res.data.map((entry) => (
-            <EntryPrev
-              id={entry._id}
-              title={entry.title}
-              text={entry.text}
-              createTime={this.getTime(entry._id)}
-            ></EntryPrev>
-          )),
-        });
-      })
-      .catch((err) => {
-        console.log("Error: " + err);
-      });
+  componentDidMount = async () => {
+    await this.props.entriesInitialized();
+    this.setEntryDisplay(this.props.selected);
   };
 
-  /* Create new entry on press of create button */
-  // TODO: change username to fit session
-  handleCreate = async () => {
-    let entryHistory = [...this.state.entryHistory];
-    let currId = -1;
-
-    // add entry to database
-    const entry = {
-      username: "yenalice",
-      title: this.state.currTitle,
-      text: this.state.currText,
-    };
-
-    await axios
-      .post("http://localhost:5000/entry?user=yenalice", entry)
-      .then((res) => {
-        currId = res.data.id;
-      })
-      .catch((err) => {
-        console.log("Error: " + err);
-      });
-
-    // create new entry preview
-    entryHistory.push(
-      <EntryPrev
-        id={currId}
-        title={this.state.currTitle}
-        text={this.state.currText}
-      ></EntryPrev>
-    );
-
-    this.setState({ entryHistory });
+  /* store changes to title box */
+  handleTitleChange = (event) => {
+    this.setState({ title: event.target.value });
   };
 
-  /* load entry upon selecting an entry preview on the side */
+  /* store changes to text box */
+  handleTextChange = (event) => {
+    this.setState({ text: event.target.value });
+  };
+
+  /* create new entry */
+  handleCreate = () => {
+    this.props.entryCreated();
+  };
+
+  /* create new entry */
+  handleDelete = (id) => {
+    // delete current selected entry
+    // popup appears - "Are you sure you want to delete this entry?"
+    // if yes, then:
+    this.props.entryDeleted(id);
+  };
+
+  /* highlight entryPrev selected & load info of selected entry into display */
   handleSelectEntry = (id) => {
+    this.props.changeSelected(id);
+    this.setEntryDisplay(id);
+  };
+
+  /* save entry changes to database */
+  handleEntrySave = (event) => {
+    event.stopPropagation();
+
+    const id = this.props.selected;
+    const title = this.state.title;
+    const text = this.state.text;
+    const data = { title, text };
+
+    axios
+      .post(`http://localhost:5000/entry/${id}?user=yenalice`, data)
+      .then(() => {
+        this.props.entryModified(id, title, text);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /* set entry title & text using id */
+  setEntryDisplay = (id) => {
     axios
       .get(`http://localhost:5000/entry/${id}?user=yenalice`)
       .then((res) => {
-        this.entryElement.current.changeEntry(res.data.title, res.data.text);
+        this.setState({ title: res.data.title, text: res.data.text });
       })
       .catch((err) => {
-        console.log("Error: " + err);
+        console.log(err);
       });
-  };
-
-  // notify entryPrev that entry has changed
-  // TODO: change in database
-  handleTitleChange = (event) => {
-    this.setState({ currTitle: event.target.value });
-  };
-
-  // notify entryPrev that text has changed
-  // TODO: change in database
-  handleTextChange = (event) => {
-    this.setState({ currText: event.target.value });
   };
 
   render() {
@@ -133,17 +98,18 @@ class App extends Component {
         </header>
         <div id="main-container">
           <Sidebar
-            entryHistory={this.state.entryHistory}
+            entryHistory={this.props.entryList}
             onCreate={this.handleCreate}
-            onSelectEntry={this.handleSelectEntry}
+            onDelete={(id) => this.handleDelete(id)}
+            onSelectEntry={(id) => this.handleSelectEntry(id)}
           />
           <div id="entry">
             <Entry
-              ref={this.entryElement}
+              title={this.state.title}
+              text={this.state.text}
               onTitleChange={this.handleTitleChange}
               onTextChange={this.handleTextChange}
-              title={this.state.currTitle}
-              text={this.state.Text}
+              onEntrySave={(e) => this.handleEntrySave(e)}
             />
           </div>
         </div>
@@ -152,4 +118,8 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return { selected: state.entryList.selected };
+}
+
+export default connect(mapStateToProps, entryActions)(App);

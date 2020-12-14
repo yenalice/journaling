@@ -1,54 +1,75 @@
-import React, { Component } from "react";
-import CreateButton from "./createButton";
+import React from "react";
 import { Link } from "react-router-dom";
+import EntryPrev from "./entryPrev";
+import { getTime } from "../timestamp";
+import { useSelector } from "react-redux";
+import AddEntry from "../icons/addEntry.svg";
+import DeleteEntry from "../icons/deleteEntry.svg";
 
-class Sidebar extends Component {
-  state = { selectedIdx: 0 };
+/* style a list-group-item as active or inactive */
+const activeStyle = (bool) => {
+  let styleStr =
+    "list-group-item list-group-item-action flex-column align-items-star";
+  return bool == true ? styleStr + " active" : styleStr;
+};
 
-  // on click, clicked entry preview is highlighted
-  handleSelectEntry = (id) => {
-    this.props.onSelectEntry(id);
-    this.setState({ selectedIdx: id });
-  };
+var Sidebar = ({ onCreate, onDelete, onSelectEntry }) => {
+  const selector = useSelector((state) => state.entryList);
+  const selectedIdx = selector.selected;
+  const revList = [...selector.entries].reverse();
 
-  // on press of create button, new entry is created & newest entry is selected
-  handleCreate = (id) => {
-    this.props.onCreate();
-    this.setState({ selectedIdx: id });
-  };
+  return (
+    <div id="sidebar">
+      <div id="sidebar-header">
+        <span>
+          <button
+            className="btn btn-light btn-outline-secondary"
+            onClick={onCreate}
+          >
+            <img src={AddEntry} alt="Add Entry Icon Unavailable" />
+          </button>
+          <button
+            className="btn btn-light btn-outline-secondary"
+            onClick={() => onDelete(selectedIdx)}
+          >
+            <img src={DeleteEntry} alt="Delete Entry Icon Unavailable" />
+          </button>
+        </span>
+        <input
+          className="form-inline form-control mr-sm-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        ></input>
+      </div>
 
-  render() {
-    let styleStr =
-      "list-group-item list-group-item-action flex-column align-items-star";
-    const revList = [...this.props.entryHistory];
-    revList.reverse();
-
-    return (
-      <div id="sidebar" className="overflow-auto">
-        <CreateButton
-          onCreate={() => this.handleCreate(this.props.id)}
-        ></CreateButton>
+      <div id="preview-container" className="overflow-auto">
         {revList.length === 0 ? null : (
           <div className="list-group">
-            {revList.map((entryPrev) => (
+            {revList.map((entry) => (
               <Link
-                to={`/entry/${entryPrev.props.id}`}
-                className={
-                  entryPrev.props.id === this.state.selectedIdx
-                    ? styleStr + " active"
-                    : styleStr
+                to={`/entry/${entry._id}`}
+                key={entry._id}
+                className={activeStyle(entry._id === selectedIdx)}
+                onClick={
+                  entry._id != selectedIdx
+                    ? () => onSelectEntry(entry._id)
+                    : null
                 }
-                onClick={() => this.handleSelectEntry(entryPrev.props.id)}
-                key={entryPrev.props.id}
               >
-                {entryPrev}
+                <EntryPrev
+                  id={entry._id}
+                  title={entry.title}
+                  text={entry.text}
+                  createTime={getTime(entry._id)}
+                ></EntryPrev>
               </Link>
             ))}
           </div>
         )}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default Sidebar;

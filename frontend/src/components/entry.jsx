@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import WeatherIcon from "../icons/weather.svg";
 import ExerciseIcon from "../icons/exercise.svg";
+import Toast from "./toast";
 
 class Entry extends Component {
-  state = { title: this.props.title, text: this.props.text };
-
-  changeEntry = (newTitle, newText) => {
-    this.setState({ title: newTitle, text: newText });
-  };
-
   render() {
-    const { onTitleChange, onTextChange } = this.props;
+    const {
+      title,
+      text,
+      onTitleChange,
+      onTextChange,
+      onEntrySave,
+    } = this.props;
 
     return (
       <React.Fragment>
@@ -20,9 +21,9 @@ class Entry extends Component {
               id="title"
               type="text"
               placeholder="Entry Title"
-              onChange={onTitleChange}
-              value={this.state.title}
               className="form-control"
+              onChange={onTitleChange}
+              value={title}
             ></input>
             <div id="date-box">DATE BOX</div>
           </div>
@@ -37,14 +38,24 @@ class Entry extends Component {
           <div>FORMATTING STUFF</div>
         </div>
 
-        <textarea
-          id="text-area"
-          type="text"
-          placeholder="How was your day?"
-          onChange={onTextChange}
-          value={this.state.text}
-          className="form-control"
-        ></textarea>
+        <div className="text-group">
+          <textarea
+            id="text-area"
+            type="text"
+            placeholder="How was your day?"
+            className="form-control overflow-auto"
+            onChange={onTextChange}
+            value={text}
+          ></textarea>
+
+          <button
+            className="btn btn-primary"
+            id="save-btn"
+            onClick={(e) => onEntrySave(e)}
+          >
+            SAVE
+          </button>
+        </div>
       </React.Fragment>
     );
   }

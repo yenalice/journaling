@@ -7,15 +7,19 @@ import UserDetail from "./components/userDetail";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter as Router, Route } from "react-router-dom"; // dynamic rendering
+import store from "./store";
+import { Provider } from "react-redux";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <Route exact path={["/", "/login", "/signup"]} component={Home} />
-      <Route path="/entry" component={App} />
-      <Route path="/user/:username" component={UserDetail} />
-      {/* TODO: make user component */}
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Route exact path={["/", "/login", "/signup"]} component={Home} />
+        <Route path="/entry" component={App} />
+        <Route path="/user/:username" component={UserDetail} />
+        {/* TODO: make user component */}
+      </Router>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

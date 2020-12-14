@@ -18,6 +18,11 @@
   },
   "homepage": "https://github.com/yenalice/journaling#readme",
   "devDependencies": {
-    "concurrently": "^5.3.0"
+    "concurrently": "^5.3.0",
+    "remote-redux-devtools": "^0.5.16"
+  },
+  "dependencies": {
+    "immer": "^8.0.0",
+    "redux-thunk": "^2.3.0"
   }
 }

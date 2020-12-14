@@ -3,7 +3,7 @@ let EntryModel = require("../models/entryModel");
 var sanitize = require("express-mongo-sanitize");
 var mongoose = require("mongoose");
 
-// post entry to database on press of create button
+/* ----- create new entry ----- */
 router.route("/").post((req, res) => {
   // TODO: sanitize
   const username = req.body.username;
@@ -17,13 +17,13 @@ router.route("/").post((req, res) => {
     .then(() => {
       res.json({
         success: "Entry added!",
-        id: mongoose.Types.ObjectId(res._id).toString(),
+        _id: mongoose.Types.ObjectId(newEntry.id),
       });
     })
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-// get request to entry
+/* ----- get request to entry ----- */
 router.route("/").get((req, res) => {
   //const { user } = req.query.user;
 
@@ -39,6 +39,31 @@ router.route("/:id").get((req, res) => {
 
   EntryModel.findById(id)
     .then((entry) => res.json(entry))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+/* ----- modify by id ----- */
+router.route("/:id").post((req, res) => {
+  const id = req.params.id;
+
+  EntryModel.findById(id)
+    .then((entry) => {
+      entry.username = "yenalice";
+      entry.title = req.body.title;
+      entry.text = req.body.text;
+
+      entry
+        .save()
+        .then(() => res.json("Entry updated"))
+        .catch((err) => res.status(400).json("Error: " + err));
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
+/* ----- delete a specific entry ----- */
+router.route("/:id").delete((req, res) => {
+  EntryModel.findByIdAndDelete(req.params.id)
+    .then(() => res.json("Entry deleted"))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
