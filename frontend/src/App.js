@@ -5,17 +5,6 @@ import Entry from "./components/entry";
 import NavBar from "./components/navBar";
 import Sidebar from "./components/sidebar";
 import * as entryActions from "./actions/entryActions";
-/*
-import {
-  HtmlEditor,
-  Image,
-  Inject,
-  Link,
-  QuickToolbar,
-  RichTextEditorComponent,
-  Toolbar,
-} from "@syncfusion/ej2-react-richtexteditor";
-*/
 
 class App extends Component {
   state = {
@@ -37,20 +26,23 @@ class App extends Component {
 
   /* store changes to text box */
   handleTextChange = (event) => {
-    this.setState({ text: event.target.value });
+    const val = event.value;
+    this.setState({ text: val.substring(3, val.length - 4) });
   };
 
   /* create new entry */
-  handleCreate = () => {
-    this.props.entryCreated();
+  handleCreate = async () => {
+    await this.props.entryCreated();
+    this.setEntryDisplay(this.props.selected);
   };
 
   /* create new entry */
-  handleDelete = (id) => {
+  handleDelete = async (id) => {
     // delete current selected entry
     // popup appears - "Are you sure you want to delete this entry?"
     // if yes, then:
-    this.props.entryDeleted(id);
+    await this.props.entryDeleted(id);
+    this.setEntryDisplay(this.props.selected);
   };
 
   /* highlight entryPrev selected & load info of selected entry into display */

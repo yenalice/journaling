@@ -22,6 +22,7 @@
     "remote-redux-devtools": "^0.5.16"
   },
   "dependencies": {
+    "@syncfusion/ej2-react-richtexteditor": "^18.3.52",
     "immer": "^8.0.0",
     "redux-thunk": "^2.3.0"
   }

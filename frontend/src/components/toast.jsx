@@ -4,7 +4,7 @@ const toast = (props) => {
   return (
     <div
       class="toast"
-      show={"false"}
+      show={() => toast("show")}
       role="alert"
       aria-live="assertive"
       aria-atomic="true"

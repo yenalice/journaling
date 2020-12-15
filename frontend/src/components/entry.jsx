@@ -3,6 +3,18 @@ import WeatherIcon from "../icons/weather.svg";
 import ExerciseIcon from "../icons/exercise.svg";
 import Toast from "./toast";
 
+import {
+  HtmlEditor,
+  Image,
+  Inject,
+  Link,
+  QuickToolbar,
+  RichTextEditorComponent,
+  Toolbar,
+  ToolbarSettingsModel,
+  IFormatter,
+} from "@syncfusion/ej2-react-richtexteditor";
+
 class Entry extends Component {
   render() {
     const {
@@ -35,19 +47,19 @@ class Entry extends Component {
               <img src={ExerciseIcon} alt="Exercise Icon Unavailable" />
             </button>
           </div>
-          <div>FORMATTING STUFF</div>
         </div>
 
         <div className="text-group">
-          <textarea
-            id="text-area"
-            type="text"
-            placeholder="How was your day?"
-            className="form-control overflow-auto"
-            onChange={onTextChange}
+          <RichTextEditorComponent
+            id="rich-text"
             value={text}
-          ></textarea>
-
+            height="500"
+            change={onTextChange}
+          >
+            <Inject
+              services={[Link, Image, HtmlEditor, Toolbar, QuickToolbar]}
+            />
+          </RichTextEditorComponent>
           <button
             className="btn btn-primary"
             id="save-btn"
