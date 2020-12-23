@@ -16,6 +16,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
   },
+  "peerDependencies": {},
   "homepage": "http://localhost",
   "scripts": {
     "start": "react-scripts start",

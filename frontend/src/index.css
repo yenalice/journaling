@@ -9,6 +9,9 @@
 @import "../../node_modules/@syncfusion/ej2-popups/styles/material.css";
 @import "../../node_modules/@syncfusion/ej2-richtexteditor/styles/material.css";
 
+/* SECOND Rich text editor formatting */
+@import "../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
 html,
 body {
   /* Get rid of excess whitespace on page */
@@ -32,12 +35,17 @@ code {
   background-color: #fcb9b9;
 }
 
-.navbar {
-  min-height: 50px;
+.modal-btns {
+  margin-top: 1em;
+}
+
+.yes-btn {
+  margin-right: 1em;
 }
 
 #sidebar {
   width: 20%;
+  z-index: 0;
 }
 
 #sidebar-header {

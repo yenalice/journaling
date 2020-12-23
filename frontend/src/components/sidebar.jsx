@@ -30,7 +30,7 @@ var Sidebar = ({ onCreate, onDelete, onSelectEntry }) => {
           </button>
           <button
             className="btn btn-light btn-outline-secondary"
-            onClick={() => onDelete(selectedIdx)}
+            onClick={onDelete}
           >
             <img src={DeleteEntry} alt="Delete Entry Icon Unavailable" />
           </button>

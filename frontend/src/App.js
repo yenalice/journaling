@@ -5,11 +5,13 @@ import Entry from "./components/entry";
 import NavBar from "./components/navBar";
 import Sidebar from "./components/sidebar";
 import * as entryActions from "./actions/entryActions";
+import DeleteModal from "./components/deleteModal";
 
 class App extends Component {
   state = {
     title: "",
     text: "",
+    modalIsOpen: false,
   };
 
   /* load sidebar of entry previews and the entry display */
@@ -36,13 +38,9 @@ class App extends Component {
     this.setEntryDisplay(this.props.selected);
   };
 
-  /* create new entry */
-  handleDelete = async (id) => {
-    // delete current selected entry
-    // popup appears - "Are you sure you want to delete this entry?"
-    // if yes, then:
-    await this.props.entryDeleted(id);
-    this.setEntryDisplay(this.props.selected);
+  /* delete current selected entry */
+  handleDelete = () => {
+    this.setState({ modalIsOpen: true });
   };
 
   /* highlight entryPrev selected & load info of selected entry into display */
@@ -52,7 +50,7 @@ class App extends Component {
   };
 
   /* save entry changes to database */
-  handleEntrySave = (event) => {
+  handleEntrySave = async (event) => {
     event.stopPropagation();
 
     const id = this.props.selected;
@@ -60,14 +58,17 @@ class App extends Component {
     const text = this.state.text;
     const data = { title, text };
 
-    axios
+    let success = axios
       .post(`http://localhost:5000/entry/${id}?user=yenalice`, data)
       .then(() => {
         this.props.entryModified(id, title, text);
+        return true;
       })
       .catch((err) => {
         console.log(err);
+        return false;
       });
+    return success;
   };
 
   /* set entry title & text using id */
@@ -82,6 +83,14 @@ class App extends Component {
       });
   };
 
+  handleModalClick = async (res) => {
+    if (res === "yes") {
+      await this.props.entryDeleted(this.props.selected);
+      this.setEntryDisplay(this.props.selected);
+    }
+    this.setState({ modalIsOpen: false });
+  };
+
   render() {
     return (
       <div className="App">
@@ -89,10 +98,14 @@ class App extends Component {
           <NavBar />
         </header>
         <div id="main-container">
+          <DeleteModal
+            isOpen={this.state.modalIsOpen}
+            onModalClick={(res) => this.handleModalClick(res)}
+          />
           <Sidebar
             entryHistory={this.props.entryList}
             onCreate={this.handleCreate}
-            onDelete={(id) => this.handleDelete(id)}
+            onDelete={this.handleDelete}
             onSelectEntry={(id) => this.handleSelectEntry(id)}
           />
           <div id="entry">

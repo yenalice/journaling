@@ -33,7 +33,6 @@ export const entryCreated = () => {
     return await axios
       .post(`http://localhost:5000/entry?user=yenalice`, entry)
       .then((res) => {
-        console.log("ID OF CREATED: ", res.data);
         dispatch({
           type: actionTypes.ENTRY_CREATED,
           payload: {
