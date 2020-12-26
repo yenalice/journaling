@@ -20,10 +20,10 @@ router.route("/").post((req, res) => {
         _id: mongoose.Types.ObjectId(newEntry.id),
       });
     })
-    .catch((err) => res.status(400).json("Error: " + err));
+    .catch((err) => res.status(400).json(err));
 });
 
-/* ----- get request to entry ----- */
+/* ----- get request for all entries belonging to user ----- */
 router.route("/").get((req, res) => {
   //const { user } = req.query.user;
 
@@ -31,15 +31,16 @@ router.route("/").get((req, res) => {
 
   EntryModel.find({ username: "yenalice" })
     .then((entry) => res.json(entry))
-    .catch((err) => res.status(400).json("Error: " + err));
+    .catch((err) => res.status(400).json(err));
 });
 
+/* ----- get request to specific entry ----- */
 router.route("/:id").get((req, res) => {
   const id = req.params.id;
 
   EntryModel.findById(id)
     .then((entry) => res.json(entry))
-    .catch((err) => res.status(400).json("Error: " + err));
+    .catch((err) => res.status(400).json(err));
 });
 
 /* ----- modify by id ----- */
@@ -55,16 +56,28 @@ router.route("/:id").post((req, res) => {
       entry
         .save()
         .then(() => res.json("Entry updated"))
-        .catch((err) => res.status(400).json("Error: " + err));
+        .catch((err) => res.status(400).json(err));
     })
-    .catch((err) => res.status(400).json("Error: " + err));
+    .catch((err) => res.status(400).json(err));
 });
 
 /* ----- delete a specific entry ----- */
 router.route("/:id").delete((req, res) => {
   EntryModel.findByIdAndDelete(req.params.id)
     .then(() => res.json("Entry deleted"))
-    .catch((err) => res.status(400).json("Error: " + err));
+    .catch((err) => res.status(400).json(err));
+});
+
+/* ----- delete multiple specified entries ----- */
+router.route("/delete-multiple/:ids").delete(function (req, res) {
+  const ids = String(req.params.ids).split(",");
+  EntryModel.deleteMany({
+    _id: {
+      $in: ids,
+    },
+  })
+    .then(() => res.json("Selected entries deleted!"))
+    .catch((err) => res.status(400).json(err));
 });
 
 module.exports = router;

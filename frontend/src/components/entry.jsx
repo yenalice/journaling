@@ -1,16 +1,13 @@
 import React from "react";
 import WeatherIcon from "../icons/weather.svg";
 import ExerciseIcon from "../icons/exercise.svg";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-import {
-  HtmlEditor,
-  Image,
-  Inject,
-  Link,
-  QuickToolbar,
-  RichTextEditorComponent,
-  Toolbar,
-} from "@syncfusion/ej2-react-richtexteditor";
+const editorStyle = {
+  height: "500px",
+  padding: "0 1em",
+};
 
 const Entry = ({ title, text, onTitleChange, onTextChange, onEntrySave }) => {
   // TODO: I wanted to send a toast but I can't figure out how to resolve the hooks error :(
@@ -19,20 +16,13 @@ const Entry = ({ title, text, onTitleChange, onTextChange, onEntrySave }) => {
     success === true ? alert("Entry Saved") : alert("Save Error");
   };
 
+  // TODO: wysiwyg text editor is throwing a warning on click of editor:
+  // "Can't call setState on a component that is not yet mounted" -
+  // could this be because i'm setting new state to new EditorState object
+  // each time text changes & there are issues with timing & the old one unmounting??
   return (
     <React.Fragment>
       <div id="extras-box">
-        <div>
-          <input
-            id="title"
-            type="text"
-            placeholder="Entry Title"
-            className="form-control"
-            onChange={onTitleChange}
-            value={title}
-          ></input>
-          <div id="date-box">DATE BOX</div>
-        </div>
         <div id="factors">
           <button className="factor-box btn btn-light">
             <img src={WeatherIcon} alt="Weather Icon Unavailable" />
@@ -44,15 +34,24 @@ const Entry = ({ title, text, onTitleChange, onTextChange, onEntrySave }) => {
       </div>
 
       <div className="text-group form-group">
-        <RichTextEditorComponent
-          cssClass="form-control form-control-lg"
-          value={text}
-          height="500"
-          change={onTextChange}
-          style={{ zIndex: 0 }}
-        >
-          <Inject services={[Link, Image, HtmlEditor, Toolbar, QuickToolbar]} />
-        </RichTextEditorComponent>
+        <input
+          id="title"
+          type="text"
+          placeholder="Entry Title"
+          className="form-control"
+          onChange={onTitleChange}
+          value={title}
+        ></input>
+        <div id="editor-wrapper">
+          <Editor
+            editorClassName="editor"
+            placeholder="How was your day?"
+            editorState={text}
+            onEditorStateChange={onTextChange}
+            editorStyle={editorStyle}
+          />
+        </div>
+
         <button
           className="btn btn-primary"
           id="save-btn"

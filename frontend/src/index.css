@@ -1,17 +1,3 @@
-/* Rich Text Editor formatting */
-@import "../../node_modules/@syncfusion/ej2-base/styles/material.css";
-@import "../../node_modules/@syncfusion/ej2-icons/styles/material.css";
-@import "../../node_modules/@syncfusion/ej2-buttons/styles/material.css";
-@import "../../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css";
-@import "../../node_modules/@syncfusion/ej2-inputs/styles/material.css";
-@import "../../node_modules/@syncfusion/ej2-lists/styles/material.css";
-@import "../../node_modules/@syncfusion/ej2-navigations/styles/material.css";
-@import "../../node_modules/@syncfusion/ej2-popups/styles/material.css";
-@import "../../node_modules/@syncfusion/ej2-richtexteditor/styles/material.css";
-
-/* SECOND Rich text editor formatting */
-@import "../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
 html,
 body {
   /* Get rid of excess whitespace on page */
@@ -29,10 +15,14 @@ code {
     monospace;
 }
 
+.navbar {
+  height: 3.5em;
+}
+
 #main-container {
   display: flex;
-  height: 91.5vh;
-  background-color: #fcb9b9;
+  height: 93.4vh;
+  background-color: #ffd7d7;
 }
 
 .modal-btns {
@@ -49,17 +39,45 @@ code {
 }
 
 #sidebar-header {
-  height: 10%;
+  height: 14.2%;
+}
+
+.pagination > li > a {
+  box-shadow: none !important; /* does it look better with the box-shadow?? unsure ahhhh */
+  background-color: #fcb1b1 !important;
+  border-color: rgb(255, 246, 246) !important;
+  color: rgb(255, 246, 246) !important;
+}
+
+.pagination > li.active > a {
+  background-color: #fa9c9c !important;
+  border-color: white !important;
+  border-width: 2px;
+}
+
+.pagination > li > a:hover {
+  color: rgb(218, 216, 216) !important;
 }
 
 #preview-container {
-  height: 90%;
+  height: 85%;
 }
 
 /* TODO: fix list item height so that it DOESN'T keep expanding as textarea input does!!!! */
 .list-group-item {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+#prev-link.active,
+#save-btn {
+  background-color: rgb(206, 72, 106) !important;
+  border: none;
+}
+
+#prev-ctn {
+  margin-left: 2%;
+  vertical-align: middle;
 }
 
 #entry {
@@ -71,6 +89,10 @@ code {
 
 .text-group {
   height: 100%;
+}
+
+#editor-wrapper {
+  background-color: white;
 }
 
 #factors {
@@ -92,8 +114,8 @@ code {
 
 .container-style {
   display: flex;
+  background-color: #ffd7d7;
   flex-direction: column;
-  background-color: #ff9999;
   padding: 2%;
   vertical-align: center;
   text-align: center;
