@@ -2,7 +2,10 @@ import React from "react";
 
 const NavBar = () => {
   return (
-    <nav className="navbar navbar-light bg-light justify-content-between">
+    <nav
+      id="nav"
+      className="navbar navbar-light bg-light justify-content-between"
+    >
       <p className="navbar-brand">Kibo</p> {/* TODO: Link to homepage */}
       <a className="navbar-link" id="user-link">
         User

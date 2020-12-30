@@ -15,15 +15,50 @@ code {
     monospace;
 }
 
-.navbar {
-  height: 3.5em;
+/* TODO: fix issues with responsiveness at window's very smallest screen size */
+
+/* ---------- SCROLLBAR ---------- */
+
+::-webkit-scrollbar {
+  width: 12px;
 }
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: rgb(128, 214, 253);
+}
+
+/* ---------- NAVBAR ---------- */
+
+#nav {
+  height: 3.5em;
+  background-color: rgb(206, 72, 106) !important;
+  /* border-bottom: 5px solid rgb(255, 254, 186) !important; */
+}
+
+#user-link {
+  margin: 0 2em;
+}
+
+/* ---------- MAIN CONTAINER ---------- */
 
 #main-container {
   display: flex;
-  height: 93.4vh;
   background-color: #ffd7d7;
+  /* fix size of page to screen size */
+  position: fixed;
+  top: 3.5em;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow-y: scroll;
 }
+
+/* ---------- MODAL ---------- */
 
 .modal-btns {
   margin-top: 1em;
@@ -33,13 +68,31 @@ code {
   margin-right: 1em;
 }
 
+/* ---------- SIDEBAR ---------- */
+
 #sidebar {
   width: 20%;
   z-index: 0;
+  background-color: #e7b3b3;
+  border-radius: 5px;
 }
 
-#sidebar-header {
-  height: 14.2%;
+#sidebar-btns {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  background-color: rgb(128, 214, 253);
+  width: 95%;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+#searchbar {
+  width: 95%;
+}
+
+.pagination {
+  margin: auto;
 }
 
 .pagination > li > a {
@@ -60,7 +113,11 @@ code {
 }
 
 #preview-container {
-  height: 85%;
+  max-height: 82%;
+}
+
+#prev-contents {
+  margin-left: 2%;
 }
 
 /* TODO: fix list item height so that it DOESN'T keep expanding as textarea input does!!!! */
@@ -69,16 +126,12 @@ code {
   text-overflow: ellipsis;
 }
 
-#prev-link.active,
-#save-btn {
-  background-color: rgb(206, 72, 106) !important;
+#prev-link.active {
+  background-color: rgb(255, 187, 0) !important;
   border: none;
 }
 
-#prev-ctn {
-  margin-left: 2%;
-  vertical-align: middle;
-}
+/* ---------- ENTRY DISPLAY ---------- */
 
 #entry {
   width: 80%;
@@ -93,24 +146,22 @@ code {
 
 #editor-wrapper {
   background-color: white;
+  height: 85%;
 }
 
 #factors {
   display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  background-color: rgb(128, 214, 253);
+  border-radius: 5px;
 }
 
 .factor-box {
   margin: 0.5em;
 }
 
-#save-btn {
-  margin: 1em 0;
-  float: right;
-}
-
-#user-link {
-  margin: 0 2em;
-}
+/* ---------- HOME PAGE ---------- */
 
 .container-style {
   display: flex;
@@ -141,4 +192,17 @@ code {
 
 .input {
   margin-top: 4%;
+}
+
+/* ---------- MEDIA QUERIES ---------- */
+
+@media (max-width: 950px) {
+  /*
+  /* use for testing */
+  #main-container {
+    background-color: red;
+  }
+  */ #preview-container {
+    max-height: 50%;
+  }
 }

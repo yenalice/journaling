@@ -5,15 +5,23 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const editorStyle = {
-  height: "500px",
   padding: "0 1em",
 };
 
-const Entry = ({ title, text, onTitleChange, onTextChange, onEntrySave }) => {
-  // TODO: I wanted to send a toast but I can't figure out how to resolve the hooks error :(
-  const handleEntrySave = async (event) => {
-    const success = await onEntrySave(event);
-    success === true ? alert("Entry Saved") : alert("Save Error");
+const Entry = ({ title, text, onTitleChange, onTextChange }) => {
+  const toolbar = {
+    embedded: {
+      embedCallback: (e) => handleEmbed(e),
+    },
+  };
+
+  /* allows copying & pasting direct link from browser searchbar instead of just embed link */
+  const handleEmbed = (url) => {
+    if (url.includes("youtube.com/watch?v=")) {
+      const id = url.split("youtube.com/watch?v=")[1];
+      return "https://www.youtube.com/embed/" + id;
+    }
+    return url;
   };
 
   // TODO: wysiwyg text editor is throwing a warning on click of editor:
@@ -24,10 +32,10 @@ const Entry = ({ title, text, onTitleChange, onTextChange, onEntrySave }) => {
     <React.Fragment>
       <div id="extras-box">
         <div id="factors">
-          <button className="factor-box btn btn-light">
+          <button className="factor-box btn btn-light" title="Weather">
             <img src={WeatherIcon} alt="Weather Icon Unavailable" />
           </button>
-          <button className="factor-box btn btn-light">
+          <button className="factor-box btn btn-light" title="Exercise">
             <img src={ExerciseIcon} alt="Exercise Icon Unavailable" />
           </button>
         </div>
@@ -44,21 +52,13 @@ const Entry = ({ title, text, onTitleChange, onTextChange, onEntrySave }) => {
         ></input>
         <div id="editor-wrapper">
           <Editor
-            editorClassName="editor"
             placeholder="How was your day?"
             editorState={text}
             onEditorStateChange={onTextChange}
             editorStyle={editorStyle}
+            toolbar={toolbar}
           />
         </div>
-
-        <button
-          className="btn btn-primary"
-          id="save-btn"
-          onClick={(e) => handleEntrySave(e)}
-        >
-          SAVE
-        </button>
       </div>
     </React.Fragment>
   );

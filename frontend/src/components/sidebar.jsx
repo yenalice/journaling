@@ -6,6 +6,8 @@ import AddEntry from "../icons/addEntry.svg";
 import DeleteEntry from "../icons/deleteEntry.svg";
 import PencilSquare from "../icons/pencilSquare.svg";
 import TrashCan from "../icons/trashCan.svg";
+import SaveEntry from "../icons/saveEntry.svg";
+import VerticalDots from "../icons/threeDotsVertical.svg";
 import ReactPaginate from "react-paginate";
 
 /* style a list-group-item as active or inactive */
@@ -25,23 +27,37 @@ var Sidebar = ({
   onSelectEntry,
   onSearch,
   onPageClick,
+  onEntrySave,
 }) => {
   const selector = useSelector((state) => state.entryList);
   const selectedIdx = selector.selected;
   const revList = [...selector.filtered].reverse();
 
+  // TODO: I wanted to send a toast but I can't figure out how to resolve the hooks error :(
+  const handleEntrySave = async (event) => {
+    const success = await onEntrySave(event);
+    success === true ? alert("Entry Saved") : alert("Save Error");
+  };
+
+  const displayExtras = () => {
+    // TODO: implement sorting
+    // TODO: implement filtering by date range
+  };
+
   return (
     <div id="sidebar">
       <div id="sidebar-header">
-        <span>
+        <span id="sidebar-btns">
           <button
-            className="btn btn-light btn-outline-secondary"
+            className="btn btn-light"
+            title="Create a new entry"
             onClick={onCreate}
           >
             <img src={AddEntry} alt="Add Entry Icon Unavailable" />
           </button>
           <button
-            className="btn btn-light btn-outline-secondary"
+            className="btn btn-light"
+            title="Delete selected entry"
             onClick={onDelete}
           >
             <img src={DeleteEntry} alt="Delete Entry Icon Unavailable" />
@@ -49,7 +65,8 @@ var Sidebar = ({
           {deleteMode === true ? (
             <Link to="/entry/">
               <button
-                className="btn btn-light btn-outline-secondary"
+                className="btn btn-light"
+                title="Delete multiple entries"
                 onClick={() => onDeleteMultiple("trash")}
               >
                 <img src={TrashCan} alt="Trash Can Icon Unavailable" />
@@ -58,41 +75,62 @@ var Sidebar = ({
           ) : (
             <Link to="/entry/delete-multiple">
               <button
-                className="btn btn-light btn-outline-secondary"
+                className="btn btn-light"
+                title="Delete multiple entries"
                 onClick={() => onDeleteMultiple("pencil")}
               >
                 <img src={PencilSquare} alt="Pencil Square Icon Unavailable" />
               </button>
             </Link>
           )}
+
+          <button
+            className="btn btn-light"
+            id="save-btn"
+            title="Save current entry"
+            onClick={(e) => handleEntrySave(e)}
+          >
+            <img src={SaveEntry} alt="Save Icon Unavailable" />
+          </button>
+
+          <button
+            className="btn btn-light"
+            title="Extra features"
+            onClick={displayExtras}
+          >
+            <img src={VerticalDots} alt="Extras Icon Unavailable" />
+          </button>
         </span>
         <input
+          id="searchbar"
           className="form-inline form-control mr-sm-2"
           type="search"
           placeholder="Search"
           aria-label="Search"
           onChange={(e) => onSearch(e)}
         />
-        <ReactPaginate
-          previousLabel={"<"}
-          nextLabel={">"}
-          breakLabel={"..."}
-          breakClassName={"page-item"}
-          breakLinkClassName={"page-link"}
-          pageClassName={"page-item"}
-          pageLinkClassName={"page-link"}
-          previousClassName={"page-item"}
-          previousLinkClassName={"page-link"}
-          nextClassName={"page-item"}
-          nextLinkClassName={"page-link"}
-          pageCount={selector.entries.length / 20}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={(n) => onPageClick(n)}
-          containerClassName={"pagination"}
-          subContainerClassName={"pages pagination"}
-          activeClassName={"active"}
-        />
+        <span id="pagination-wrapper">
+          <ReactPaginate
+            previousLabel={"<"}
+            nextLabel={">"}
+            breakLabel={"..."}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            pageCount={selector.entries.length / 20}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={(n) => onPageClick(n)}
+            containerClassName={"pagination flex-wrap"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}
+          />
+        </span>
       </div>
 
       <div id="preview-container" className="overflow-auto">
@@ -110,7 +148,7 @@ var Sidebar = ({
                     : null
                 }
               >
-                <div id="prev-ctn">
+                <div id="prev-contents">
                   {deleteMode === true ? (
                     <input
                       className="form-check-input"

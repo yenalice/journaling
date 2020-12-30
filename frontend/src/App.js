@@ -148,6 +148,7 @@ class App extends Component {
             onSelectEntry={(id) => this.handleSelect(id)}
             onSearch={(e) => this.handleSearch(e)}
             onPageClick={(n) => this.handlePageClick(n)}
+            onEntrySave={(e) => this.handleEntrySave(e)}
           />
           <div id="entry">
             <Entry
@@ -155,7 +156,6 @@ class App extends Component {
               text={this.state.text}
               onTitleChange={this.handleTitleChange}
               onTextChange={this.handleTextChange}
-              onEntrySave={(e) => this.handleEntrySave(e)}
             />
           </div>
         </div>

@@ -160,7 +160,6 @@ const getPage = (list, pageNumber) => {
 
 // get newest selected entry
 const selectEntry = (list) => {
-  console.log("SELECT ENTRY LIST: ", list);
   return list.length === 0 ? -1 : list[list.length - 1]._id;
 };
 
